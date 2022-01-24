@@ -1,0 +1,72 @@
+
+To install, run the following
+Requires pytorch 1.7.1 and cuda 10.1.243
+
+1.8.1 fails because of from torch._six import queue (broken in 1.8 onwards)
+cuda 10.1.1xx fails because it was build with a different CXX version
+
+# CUDA SETUP
+Run the following
+
+    FOLDER=/home/rdevans/cuda/10.1
+    wget https://developer.download.nvidia.com/compute/cuda/10.1/Prod/local_installers/cuda_10.1.243_418.87.00_linux.run ~/Downloads
+    bash ~/Downloads/cuda_10.1.243_418.87.00_linux.run --silent --installpath=$FOLDER --toolkit --toolkitpath=$FOLDER
+    cp cuda_env.sh $FOLDER
+    source $FOLDER/cuda_env.sh
+
+# VENV SETUP
+Run the following
+
+    python3 -m venv ~/venvs/actnn
+    source ~/venvs/actnn/bin/activate
+    pip3 install wheel ninja matplotlib tqdm
+    pip3 install torch==1.7.1+cu101 torchvision==0.8.2+cu101 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+I have a list of possible install commands below
+
+# INSTALL APEX
+
+    git clone https://github.com/NVIDIA/apex
+    pushd apex
+    pip3 install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
+    popd
+
+# INSTALL ACTNN
+    
+    git clone https://github.com/ucbrise/actnn.git
+    cd actnn
+    pip install -v -e .
+
+
+To run
+DEBUG_SPEED=True python3 train.py ~/datasets/IMAGENET-UNCROPPED --gpu 0 --arch resnet50 -b 512 --alg L5 -j 8
+
+
+Torch install commands:
+
+# CUDA 11.0
+pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2
+
+# CUDA 10.1
+pip install torch==1.7.1+cu101 torchvision==0.8.2+cu101 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 9.2
+pip install torch==1.7.1+cu92 torchvision==0.8.2+cu92 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CPU only
+pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 11.0
+pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+# CUDA 10.2
+pip install torch==1.8.0 torchvision==0.9.0 torchaudio==0.8.0
+
+# CPU only
+pip install torch==1.8.0+cpu torchvision==0.9.0+cpu torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+
+
+
