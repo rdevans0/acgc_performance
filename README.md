@@ -1,16 +1,16 @@
-# ActNN : Activation Compressed Training
+# AC-GC Performance Model
+This code is the performance model for [AC-GC: Lossy Activation Compression with Guaranteed Convergence](https://proceedings.neurips.cc/paper/2021/hash/e655c7716a4b3ea67f48c6322fc42ed6-Abstract.html) by 
 
-This is the official project repository for [ActNN: Reducing Training Memory Footprint via 2-Bit Activation Compressed Training](https://arxiv.org/abs/2104.14129) by
+For the functional implementation of AC-GC, see the sister repository at [https://github.com/rdevans0/acgc](https://github.com/rdevans0/acgc)
+
+
+
+The code builds off of [ActNN: Reducing Training Memory Footprint via 2-Bit Activation Compressed Training](https://arxiv.org/abs/2104.14129) by
 Jianfei Chen\*, Lianmin Zheng\*, Zhewei Yao, Dequan Wang, Ion Stoica, Michael W. Mahoney, and Joseph E. Gonzalez.
 
-**TL; DR.**
-ActNN is a PyTorch library for memory-efficient training. It reduces the training memory footprint by compressing the saved activations. ActNN is implemented as a collection of memory-saving layers. These layers have an identical interface to their PyTorch counterparts.
+which we used as a starting point due to it's concurrent nature to AC-GC, and the need to compare against it.
 
-## Abstract
-The increasing size of neural network models has been critical for improvements in their accuracy, but device memory is not growing at the same rate. This creates fundamental challenges for training neural networks within limited memory environments. In this work, we propose ActNN, a memory-efficient training framework that stores randomly quantized activations for back propagation. We prove the convergence of ActNN for general network architectures, and we characterize the impact of quantization on the convergence via an exact expression for the gradient variance. Using our theory, we propose novel mixed-precision quantization strategies that exploit the activation's heterogeneity across feature dimensions, samples, and layers. These techniques can be readily applied to existing dynamic graph frameworks, such as PyTorch, simply by substituting the layers. We evaluate ActNN on mainstream computer vision models for classification, detection, and segmentation tasks. On all these tasks, ActNN compresses the activation to 2 bits on average, with negligible accuracy loss. ActNN reduces the memory footprint of the activation by 12×, and it enables training with a 6.6× to 14× larger batch size.
-
-![mem_speed_r50](mem_speed_benchmark/mem_speed_r50.png)
-*Batch size vs. training throughput on ResNet-50. Red cross mark means out-of-memory. The shaded yellow region denotes the possible batch sizes with full precision training. ActNN achieves significantly larger maximum batch size over other state-of-the-art systems and displays a nontrivial trade-off curve.*
+**What follows is the README for ActNN, as the codebases are very similar**
 
 
 ## Install
@@ -155,33 +155,27 @@ bash tools/dist_train.sh configs/selfsup/actnn/moco_r50_v2_bs512_e200_imagenet_2
 
 For more detailed guidance, please refer to the docs of [mmcv](https://github.com/DequanWang/actnn-mmcv), [mmdet](https://github.com/DequanWang/actnn-mmdet), [mmseg](https://github.com/DequanWang/actnn-mmseg), [mmssl](https://github.com/DequanWang/actnn-mmssl).
 
-## FAQ
-1. Does ActNN supports CPU training?  
-Currently, ActNN only supports CUDA.
-
-2. Accuracy degradation / diverged training with ActNN.  
-ActNN applies lossy compression to the activations. In some challenging cases, our default compression strategy might be too aggressive.
-In this case, you may try more conservative compression strategies (which consume more memory):
-    - 4-bit per-group quantization  
-   ```python
-   actnn.set_optimization_level("L2")
-   ```
-   - 8-bit per-group quantization
-   ```python
-   actnn.set_optimization_level("L2")
-   actnn.config.activation_compression_bits = [8]
-   ```
-    If none of these works, you may report to us by creating an issue.
 
 ## Citation
 
-If the actnn library is helpful in your research, please consider citing our paper:
+If you use this library please cite our paper:
+```bibtex
+@inproceedings{acgc2021,
+  title={AC-GC: Lossy Activation Compression with Guaranteed Convergence},
+  author={Evans, R David and Aamodt, Tor M},
+  booktitle={Advances in Neural Information Processing},
+  year={2021}
+}
+```
+
+
+as well as ActNN, which served as a starting point for re-implementing AC-GC:
 
 ```bibtex
-@article{chen2021actnn,
+@inproceedings{chen2021actnn,
   title={ActNN: Reducing Training Memory Footprint via 2-Bit Activation Compressed Training},
   author={Chen, Jianfei and Zheng, Lianmin and Yao, Zhewei and Wang, Dequan and Stoica, Ion and Mahoney, Michael W and Gonzalez, Joseph E},
-  journal={arXiv preprint arXiv:2104.14129},
+  booktitle={International Conference on Machine Learning},
   year={2021}
 }
 ```
