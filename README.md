@@ -1,5 +1,5 @@
 # AC-GC Performance Model
-This code is the performance model for [AC-GC: Lossy Activation Compression with Guaranteed Convergence](https://proceedings.neurips.cc/paper/2021/hash/e655c7716a4b3ea67f48c6322fc42ed6-Abstract.html) by 
+This code is the performance model for [AC-GC: Lossy Activation Compression with Guaranteed Convergence](https://proceedings.neurips.cc/paper/2021/hash/e655c7716a4b3ea67f48c6322fc42ed6-Abstract.html) by R. David Evans, and Tor M. Aamodt.
 
 For the functional implementation of AC-GC, see the sister repository at [https://github.com/rdevans0/acgc](https://github.com/rdevans0/acgc)
 
